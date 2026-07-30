@@ -22,7 +22,7 @@
             "db://pts-core/*": [
                 "../../pts-core/assets/*"
             ],
-            "db://pts-action/*": [
+            "db://pts-language/*": [
                 "./*"
             ]
         }

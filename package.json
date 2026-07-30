@@ -1,11 +1,11 @@
 {
     "$schema": "./@types/schema/package/index.json",
     "package_version": 2,
-    "name": "pts-action",
+    "name": "pts-language",
     "version": "1.0.0",
     "author": "pTSern",
     "editor": ">=3.8.8",
-    "description": "i18n:pts-action.description",
+    "description": "i18n:pts-language.description",
     "main": "./bootstrap.js",
     "scripts": {
         "build": "tsc",
@@ -13,7 +13,9 @@
     },
     "devDependencies": {
         "@cocos/creator-types": "^3.8.0",
+        "@types/fs-extra": "^11.0.4",
         "@types/node": "^18.17.1",
+        "fs-extra": "^10.0.0",
         "typescript": "^5.8.2"
     },
     "contributions": {
@@ -21,6 +23,71 @@
             "mount": {
                 "path": "./assets",
                 "readonly": true
+            }
+        },
+        "profile": {
+            "project": {
+                "located_json": {
+                    "default": "",
+                    "message": "profile::project::changed_location",
+                    "label": "JSON Folder"
+                },
+                "always_refresh": {
+                    "default": true,
+                    "message": "profile::project::changed_refresh",
+                    "label": "Always Refresh"
+                },
+                "btn_force_generate": {
+                    "default": false,
+                    "message": "force-generate",
+                    "label": "Force Generate"
+                }
+            }
+        },
+        "project": {
+            "tab_1": {
+                "label": "PTS Language",
+                "content": {
+                    "located_json": {
+                        "ui": "ui-file",
+                        "attributes": {
+                            "protocols": "project",
+                            "value": "project://assets/",
+                            "type": "directory",
+                            "tooltip": "Folder containing .json language files"
+                        }
+                    },
+                    "always_refresh": {
+                        "ui": "ui-checkbox",
+                        "attributes": {
+                            "tooltip": "Auto-regenerate when JSON files change in AssetDB"
+                        }
+                    },
+                    "btn_force_generate": {
+                        "ui": "ui-button",
+                        "attributes": {
+                            "type": "primary",
+                            "label": "Force Generate"
+                        }
+                    }
+                }
+            }
+        },
+        "messages": {
+            "force-generate": {
+                "methods": [
+                    "force-generate"
+                ]
+            },
+            "profile::project::changed_location": {
+                "methods": [
+                    "profile::project::changed_location"
+                ]
+            },
+            "profile::project::changed_refresh": {
+                "methods": [
+                    "profile::project::changed_refresh"
+                ]
             }
         }
     }
