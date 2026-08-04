@@ -11,8 +11,8 @@ const { ccclass, property } = _decorator;
 @ccclass("Smart_StartUp")
 export abstract class Smart_StartUp extends Editor_PleaseOverride {
 
-    @property({ group: { name: "Description", id: "0", displayOrder: 0 }, visible: true, multiline: true, editorOnly: true })
-    protected _desc: string = "Edit me"
+    @property({ group: pConst.GROUPS.get('Description', '1', 10), visible: true, multiline: true, editorOnly: true, displayName: "Description" })
+    protected _$desc: string = "Edit me"
 
     @property({ type: Enums_EStartUp, group: pConst.GROUPS.CORE })
     mode: Enums_EStartUp = Enums_EStartUp.None;

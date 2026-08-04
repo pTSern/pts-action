@@ -1,5 +1,5 @@
 import { _decorator, CCInteger, tween, Tween } from 'cc';
-import { pAsync, pConst } from 'db://pts-core/scripts/utils';
+import { pArray, pAsync, pConst } from 'db://pts-core/scripts/utils';
 import { DEV } from 'cc/env';
 import { editor_property } from 'db://pts-core/scripts/utils/pClass';
 import { Event_Flexer } from 'db://pts-core/scripts/Components/Event/Event.Flexer';
@@ -9,6 +9,13 @@ const { ccclass, property } = _decorator;
 
 @ccclass('FastAction_Base')
 export abstract class FastAction_Base<_TTarget extends object> extends Smart_StartUp {
+    protected static _$list = ['_mechanic'];
+
+    static execute(action: pFlex.TArray<FastAction_Base<any>>, ...actions: FastAction_Base<any>[]) {
+        actions = pArray.flat(action, actions);
+        return Promise.all(actions.map(_ => _.execute()))
+    }
+
     abstract target: _TTarget
     @property({ min: 0, group: pConst.GROUPS.CORE })
     predelay: number = 0;
