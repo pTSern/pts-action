@@ -58,7 +58,7 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
                 `${this.name}__[${js.getClassName(this)}] is not valid to execute.\nData: [isValid, isOnLoaded, uuid]`,
                 [this.isValid, pEngine.CompUtils.isOnLoaded(this), this.uuid],
             );
-            return
+            return;
         }
 
         if (this.intMaxRunTime <= 0 || this._intRunTime < this.intMaxRunTime) {
@@ -107,6 +107,7 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
         pEngine.Json.add(this.starter.json, { func: this.execute, binder: this })
         pEngine.Json.add(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
 
+        this._onPreLoad?.();
         if(this.mode === Enums_EStartUp.None) return;
         if(this.mode === Enums_EStartUp.PreLoad) { this.execute(); return; }
 
@@ -115,7 +116,7 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
             _origin.call(this);
             this.execute();
         }
-        this._onPreLoad?.();
+
     }
 
     protected _onPreLoad?(): void

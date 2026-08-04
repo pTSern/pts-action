@@ -13,7 +13,13 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
 
     static execute(action: pFlex.TArray<FastAction_Base<any>>, ...actions: FastAction_Base<any>[]) {
         actions = pArray.flat(action, actions);
-        return Promise.all(actions.map(_ => _.execute()))
+
+        const _arr = [];
+        for(const _ of actions) {
+            _ && _.isValid && _arr.push(_.execute());
+        }
+
+        return Promise.all(_arr)
     }
 
     abstract target: _TTarget
@@ -46,6 +52,7 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
             this.destroy();
             return;
         }
+
         this._handler = this.isAlwayRecalculate ? () => {
             this._generate();
             DEV && console.log(`[${this.name}] execute time: ${this._intRunTime}`);
@@ -54,6 +61,7 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
             DEV && console.log(`[${this.name}] execute time: ${this._intRunTime}`);
             this._tween?.start();
         })
+
     }
 
     protected _onDestroy(): void {
@@ -62,9 +70,9 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
 
     protected _generate() {
         this._tween = tween(this.target);
-        let _tween = tween(this.target).delay(this.interval);
-        _tween =
-            this._mechanic(_tween)
+        const _origin = tween(this.target).delay(this.interval);
+        const _tween =
+            this._mechanic(_origin)
             .call( () => {
                 this._task.resolve();
                 this.onEachComplete.emit();
@@ -81,6 +89,7 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
             this._task.abort();
             this._tween?.stop();
             this._task.recycle();
+            this._task = pAsync.Task.create();
             this.target && Tween.stopAllByTarget(this.target);
             return;
         }
@@ -89,9 +98,14 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
         this._task.abort();
         this._tween?.stop();
         this._task.recycle();
+        this._task = pAsync.Task.create();
     }
 
     protected _onExecute() {
+        if(!this._handler) {
+            this._task.resolve();
+            return this._task.wait();
+        }
         this.scheduleOnce(this._handler, this.predelay);
         return this._task.wait();
     }
