@@ -103,9 +103,9 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     protected _onStop?(): void
 
     protected __preload(): void {
-        pEngine.Json.add(this.stopper.json, { func: this.stop, binder: this })
-        pEngine.Json.add(this.starter.json, { func: this.execute, binder: this })
-        pEngine.Json.add(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
+        pEngine.Json.event.add(this.stopper.json, { func: this.stop, binder: this })
+        pEngine.Json.event.add(this.starter.json, { func: this.execute, binder: this })
+        pEngine.Json.event.add(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
 
         this._onPreLoad?.();
         if(this.mode === Enums_EStartUp.None) return;
@@ -134,9 +134,9 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     }
 
     protected onDisable(): void {
-        pEngine.Json.remove(this.stopper.json, { func: this.stop, binder: this })
-        pEngine.Json.remove(this.starter.json, { func: this.execute, binder: this })
-        pEngine.Json.remove(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
+        pEngine.Json.event.remove(this.stopper.json, { func: this.stop, binder: this })
+        pEngine.Json.event.remove(this.starter.json, { func: this.execute, binder: this })
+        pEngine.Json.event.remove(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
 
         this._onDisable?.();
     }
