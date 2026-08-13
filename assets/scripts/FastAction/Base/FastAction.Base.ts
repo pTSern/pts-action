@@ -35,10 +35,10 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
     @property({ group: pConst.GROUPS.CORE })
     isAlwayRecalculate: boolean = false;
 
-    @property({ type: Event_Flexer, group: pConst.GROUPS.get('Listener') })
+    @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
     onEachComplete: Event_Flexer = new Event_Flexer();
 
-    @property({ type: Event_Flexer, group: pConst.GROUPS.get('Listener') })
+    @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
     onFullyComplete: Event_Flexer = new Event_Flexer();
 
     @editor_property(pAsync.Task)
@@ -61,7 +61,6 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
             DEV && console.log(`[${this.name}] execute time: ${this._intRunTime}`);
             this._tween?.start();
         })
-
     }
 
     protected _onDestroy(): void {

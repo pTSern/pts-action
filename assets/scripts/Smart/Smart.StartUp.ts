@@ -1,5 +1,5 @@
 
-import { CCInteger, _decorator, js, misc, } from "cc";
+import { CCInteger, JsonAsset, _decorator, js, misc, } from "cc";
 import { Enums_EStartUp } from "../Enums/Enums.StartUp";
 import { pConst, pEngine } from "db://pts-core/scripts/utils";
 import { editor_property } from "db://pts-core/scripts/utils/pClass";
@@ -11,14 +11,14 @@ const { ccclass, property } = _decorator;
 @ccclass("Smart_StartUp")
 export abstract class Smart_StartUp extends Editor_PleaseOverride {
 
-    @property({ group: pConst.GROUPS.get('Description', '1', 10), visible: true, multiline: true, editorOnly: true, displayName: "Description" })
+    @property({ group: pConst.GROUPS.get('Description', '1', 0), visible: true, multiline: true, editorOnly: true, displayName: "Description" })
     protected _$desc: string = "Edit me"
 
     @property({ type: Enums_EStartUp, group: pConst.GROUPS.CORE })
     mode: Enums_EStartUp = Enums_EStartUp.None;
 
-    @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
-    starter: Event_Flexer = new Event_Flexer();
+    @property({ type: JsonAsset, group: pConst.GROUPS.get('Hooker') })
+    starters: JsonAsset[] = [];
 
     @property({ min: 0, type: CCInteger, group: pConst.GROUPS.CORE })
     intMaxRunTime: number = 1;
@@ -26,13 +26,13 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     @property({ group: pConst.GROUPS.CORE })
     isStackExecution: boolean = false
 
-    @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
-    stopper: Event_Flexer = new Event_Flexer();
+    @property({ type: JsonAsset, group: pConst.GROUPS.get('Hooker') })
+    stoppers: JsonAsset[] = []
+
+    @property({ type: JsonAsset, group: pConst.GROUPS.get('Hooker') })
+    destroyers: JsonAsset[] = []
 
     @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
-    destroyer: Event_Flexer = new Event_Flexer();
-
-    @property({ type: Event_Flexer, group: pConst.GROUPS.get('Listener') })
     onEnd: Event_Flexer = new Event_Flexer();
 
     @editor_property()
@@ -103,9 +103,9 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     protected _onStop?(): void
 
     protected __preload(): void {
-        pEngine.Json.event.add(this.stopper.json, { func: this.stop, binder: this })
-        pEngine.Json.event.add(this.starter.json, { func: this.execute, binder: this })
-        pEngine.Json.event.add(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
+        pEngine.Json.event.add(this.stoppers, { func: this.stop, binder: this })
+        pEngine.Json.event.add(this.starters, { func: this.execute, binder: this })
+        pEngine.Json.event.add(this.destroyers, { func: this.actSafeDestroy, binder: this })
 
         this._onPreLoad?.();
         if(this.mode === Enums_EStartUp.None) return;
@@ -134,9 +134,9 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     }
 
     protected onDisable(): void {
-        pEngine.Json.event.remove(this.stopper.json, { func: this.stop, binder: this })
-        pEngine.Json.event.remove(this.starter.json, { func: this.execute, binder: this })
-        pEngine.Json.event.remove(this.destroyer.json, { func: this.actSafeDestroy, binder: this })
+        pEngine.Json.event.remove(this.stoppers, { func: this.stop, binder: this })
+        pEngine.Json.event.remove(this.starters, { func: this.execute, binder: this })
+        pEngine.Json.event.remove(this.destroyers, { func: this.actSafeDestroy, binder: this })
 
         this._onDisable?.();
     }
