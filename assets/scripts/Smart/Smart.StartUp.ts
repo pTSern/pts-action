@@ -32,6 +32,12 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     @property({ type: JsonAsset, group: pConst.GROUPS.get('Hooker') })
     destroyers: JsonAsset[] = []
 
+    @property({ type: JsonAsset, group: pConst.GROUPS.get('Hooker') })
+    pausers: JsonAsset[] = []
+
+    @property({ type: JsonAsset, group: pConst.GROUPS.get('Hooker') })
+    resumers: JsonAsset[] = []
+
     @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
     onEnd: Event_Flexer = new Event_Flexer();
 
@@ -98,13 +104,15 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
         this._onResume?.();
     }
 
-    protected _onPause?(): void
-    protected _onResume?(): void
-    protected _onStop?(): void
+    protected abstract _onPause(): void
+    protected abstract _onResume(): void
+    protected abstract _onStop(): void
 
     protected __preload(): void {
         pEngine.Json.event.add(this.stoppers, { func: this.stop, binder: this })
         pEngine.Json.event.add(this.starters, { func: this.execute, binder: this })
+        pEngine.Json.event.add(this.pausers, { func: this.pause, binder: this })
+        pEngine.Json.event.add(this.resumers, { func: this.resume, binder: this })
         pEngine.Json.event.add(this.destroyers, { func: this.actSafeDestroy, binder: this })
 
         this._onPreLoad?.();
@@ -138,10 +146,12 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
         pEngine.Json.event.remove(this.starters, { func: this.execute, binder: this })
         pEngine.Json.event.remove(this.destroyers, { func: this.actSafeDestroy, binder: this })
 
+        this.pause();
         this._onDisable?.();
     }
 
     protected onDestroy(): void {
+        this.stop();
         this._onDestroy?.()
     }
 

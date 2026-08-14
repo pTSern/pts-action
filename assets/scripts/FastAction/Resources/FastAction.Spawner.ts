@@ -22,4 +22,10 @@ export class FastAction_Spawner extends FastAction_Base<Node> {
         this.spawner.init();
     }
 
+    protected _onPause(): void {
+    }
+    protected _onResume(): void {
+    }
+    protected _onStop(): void {
+    }
 }
