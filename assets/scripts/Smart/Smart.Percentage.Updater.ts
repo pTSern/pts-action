@@ -103,4 +103,8 @@ export class Smart_Percentage_Updater extends Component {
         pEngine.Json.event.add(this.onPercentageChanged, { func: this._onChangeLookUp, binder: this });
         this._selector = this._target?.getComponent(this._component);
     }
+
+    protected onDestroy(): void {
+        pEngine.Json.event.remove(this.onPercentageChanged, { func: this._onChangeLookUp, binder: this });
+    }
 }

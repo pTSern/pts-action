@@ -142,10 +142,6 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     }
 
     protected onDisable(): void {
-        pEngine.Json.event.remove(this.stoppers, { func: this.stop, binder: this })
-        pEngine.Json.event.remove(this.starters, { func: this.execute, binder: this })
-        pEngine.Json.event.remove(this.destroyers, { func: this.actSafeDestroy, binder: this })
-
         this.pause();
         this._onDisable?.();
     }
@@ -153,6 +149,12 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     protected onDestroy(): void {
         this.stop();
         this._onDestroy?.()
+
+        pEngine.Json.event.remove(this.stoppers, { func: this.stop, binder: this })
+        pEngine.Json.event.remove(this.starters, { func: this.execute, binder: this })
+        pEngine.Json.event.remove(this.pausers, { func: this.pause, binder: this })
+        pEngine.Json.event.remove(this.resumers, { func: this.resume, binder: this })
+        pEngine.Json.event.remove(this.destroyers, { func: this.actSafeDestroy, binder: this })
     }
 
     actSafeDestroy() {
