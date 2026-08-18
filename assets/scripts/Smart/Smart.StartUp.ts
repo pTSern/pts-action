@@ -39,6 +39,9 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
     resumers: JsonAsset[] = []
 
     @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
+    onExecute: Event_Flexer = new Event_Flexer();
+
+    @property({ type: Event_Flexer, group: pConst.GROUPS.EVENT })
     onEnd: Event_Flexer = new Event_Flexer();
 
     @editor_property()
@@ -77,6 +80,7 @@ export abstract class Smart_StartUp extends Editor_PleaseOverride {
             this._intRunTime++;
             this._isExecuting = true;
 
+            this.onExecute.emit(...args);
             await this._onExecute(...args);
             this._isExecuting = false;
             if(this._stacked > 0) {

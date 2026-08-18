@@ -7,6 +7,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass('FastAction_Moving')
 export class FastAction_Moving extends FastAction_Base<Node> {
+
     @property({ type: Node, group: pConst.GROUPS.CORE })
     target: Node = null;
 
@@ -15,7 +16,6 @@ export class FastAction_Moving extends FastAction_Base<Node> {
 
     @property({ type: Helper_Vec3, group: pConst.GROUPS.CORE })
     helpers: Helper_Vec3[] = []
-
 
     protected _mechanic(origin: Tween<Node>): Tween<Node> {
         let _cp = (this.target ? this.target.position : this.node.position).clone();
@@ -34,5 +34,14 @@ export class FastAction_Moving extends FastAction_Base<Node> {
             _cp = _pos.clone();
             return _;
         }, origin);
+    }
+
+    protected _onPause(): void {
+    }
+
+    protected _onResume(): void {
+    }
+
+    protected _onStop(): void {
     }
 }
