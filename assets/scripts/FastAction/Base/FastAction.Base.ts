@@ -4,6 +4,7 @@ import { DEV } from 'cc/env';
 import { editor_property } from 'db://pts-core/scripts/utils/pClass';
 import { Event_Flexer } from 'db://pts-core/scripts/Components/Event/Event.Flexer';
 import { Smart_StartUp } from '../../Smart/Smart.StartUp';
+import { register } from './FastAction.Pool';
 
 const { ccclass, property } = _decorator;
 
@@ -11,11 +12,12 @@ const { ccclass, property } = _decorator;
 export abstract class FastAction_Base<_TTarget extends object> extends Smart_StartUp {
     protected static _$list = ['_mechanic'];
 
-    static execute(action: pFlex.TArray<FastAction_Base<any>>, ...actions: FastAction_Base<any>[]) {
-        actions = pArray.flat(action, actions);
+    static execute(action: pFlex.TArray<FastAction_Base<any>>, target?: any) {
+        const actions = pArray.flatter(action);
 
         const _arr = [];
         for(const _ of actions) {
+            _.setNewTarget(target);
             _ && _.isValid && _arr.push(_.execute());
         }
 
@@ -46,6 +48,19 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
 
     protected _tween: Tween<_TTarget> = null
     protected _handler: pFlex.TFunc = null;
+
+    setNewTarget(target: _TTarget) {
+        if(!target) return;
+        if(this.target === target) return;
+
+        this.target = target;
+        this._tween?.target(target)
+    }
+
+    constructor() {
+        super();
+        register(this.constructor)
+    }
 
     protected _onPreLoad(): void {
         if(!this.target) {

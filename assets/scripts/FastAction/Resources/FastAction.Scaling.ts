@@ -8,6 +8,12 @@ const { ccclass, property } = _decorator;
 
 @ccclass('FastAction_Scaling')
 export class FastAction_Scaling extends FastAction_Base<Node> {
+    protected _onPause(): void {
+    }
+    protected _onResume(): void {
+    }
+    protected _onStop(): void {
+    }
     @property({ type: Node, group: pConst.GROUPS.CORE })
     target: Node = null;
 
