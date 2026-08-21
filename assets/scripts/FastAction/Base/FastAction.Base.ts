@@ -12,6 +12,12 @@ const { ccclass, property } = _decorator;
 export abstract class FastAction_Base<_TTarget extends object> extends Smart_StartUp {
     protected static _$list = ['_mechanic'];
 
+    static stop(action: pFlex.TArray<FastAction_Base<any>>, clean: boolean = false) {
+        const actions = pArray.flatter(action);
+        for(const _ of actions) {
+            _.stop(clean)
+        }
+    }
     static execute(action: pFlex.TArray<FastAction_Base<any>>, target?: any) {
         const actions = pArray.flatter(action);
 
@@ -98,21 +104,13 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
 
     stop(clean: boolean = false) {
         super.stop();
-        if(clean) {
-            this.unscheduleAllCallbacks();
-            this._task.abort();
-            this._tween?.stop();
-            this._task.recycle();
-            this._task = pAsync.Task.create();
-            this.target && Tween.stopAllByTarget(this.target);
-            return;
-        }
 
-        this.unschedule(this._handler);
+        clean ? this.unscheduleAllCallbacks() : this.unschedule(this._handler);
         this._task.abort();
         this._tween?.stop();
         this._task.recycle();
         this._task = pAsync.Task.create();
+        clean && this.target && Tween.stopAllByTarget(this.target);
     }
 
     protected _onExecute() {
