@@ -1,8 +1,8 @@
 import { _decorator, CCInteger } from "cc";
-import { Smart_StartUp } from "../Smart/Smart.StartUp";
 import { pConst } from "db://pts-core/scripts/utils";
 import { editor_property } from "db://pts-core/scripts/utils/pClass";
 import { Event_Flexer } from "db://pts-core/scripts/Components/Event/Event.Flexer";
+import { Smart_StartUp } from "db://pts-core/scripts/Components/Smart/Smart.StartUp";
 
 const { ccclass, property } = _decorator;
 

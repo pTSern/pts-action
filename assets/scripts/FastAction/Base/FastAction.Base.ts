@@ -3,8 +3,8 @@ import { pArray, pAsync, pConst } from 'db://pts-core/scripts/utils';
 import { DEV } from 'cc/env';
 import { editor_property } from 'db://pts-core/scripts/utils/pClass';
 import { Event_Flexer } from 'db://pts-core/scripts/Components/Event/Event.Flexer';
-import { Smart_StartUp } from '../../Smart/Smart.StartUp';
 import { register } from './FastAction.Pool';
+import { Smart_StartUp } from 'db://pts-core/scripts/Components/Smart/Smart.StartUp';
 
 const { ccclass, property } = _decorator;
 
@@ -69,10 +69,11 @@ export abstract class FastAction_Base<_TTarget extends object> extends Smart_Sta
     }
 
     protected _onPreLoad(): void {
-        if(!this.target) {
-            this.destroy();
-            return;
-        }
+        this.target = this.target || this.node as unknown as _TTarget;
+        //if(!this.target) {
+        //    this.destroy();
+        //    return;
+        //}
 
         this._handler = this.isAlwayRecalculate ? () => {
             this._generate();
