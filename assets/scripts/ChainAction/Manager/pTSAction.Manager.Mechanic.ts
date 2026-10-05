@@ -27,23 +27,18 @@ export class pTSAction_Manager_Mechanic extends pTSAction_Manager_Base<pTSAction
     protected _executing: boolean = false;
 
     execute() {
-        this.recalculation && this._generate();
+        this.recalculation && ( this._tween = this.execution.generate(this._tween, this.contents, this.uuid) );
+
         this._tween?.start();
     }
 
     protected async _init() {
-        this._generate();
+        this._tween = this.execution.generate(this._tween, this.contents, this.uuid);
     }
 
     protected _stop(): void {
         this._tween?.stop();
         this.contents.forEach(_ => _.stop())
-    }
-
-    protected _generate() {
-        this._tween = tween(this.target);
-        this.contents.forEach(_ => this._tween = _.tween(this._tween));
-        this._tween.call(this._stop.bind(this));
     }
 
     protected _released(): void {
