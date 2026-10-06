@@ -1,6 +1,6 @@
 import { _decorator, Node, NodeEventType } from "cc";
 import { pTSAction_Condition_Base } from "../../Base/pTSAction.Condition.Base";
-import { pLazy } from "db://pts-core/scripts/utils";
+import { menu, pGlobal, pLazy } from "db://pts-core/scripts/utils";
 
 const { ccclass, property } = _decorator;
 
@@ -12,6 +12,7 @@ enum _EEvent {
 pLazy.enums(_EEvent)
 
 @ccclass('pTSAction_Condition_Resource_LifeCycle')
+@menu('pTSAction/Condition/Resource/LifeCycle')
 export class pTSAction_Condition_Resource_LifeCycle extends pTSAction_Condition_Base {
     @property({ type: _EEvent })
     event: _EEvent = _EEvent.OnEnable
@@ -28,11 +29,11 @@ export class pTSAction_Condition_Resource_LifeCycle extends pTSAction_Condition_
     }
 
     protected _onActivated(target: Node, status: boolean) {
-        if(!target) return;
+        const _is = this.event === Number(status);
+        pGlobal.log({ group: "pTSAction-Manager", level: "DEV" }, `[pTSAction_Condition_Resource_LifeCycle] >> [_onActivated]`, target.name, status, this.uuid, _is);
 
-        if(this.event === Number(status)) {
-            this._actReadyUp()
-        }
+        if(!target) return;
+        _is && this._actReadyUp();
     }
 
 }

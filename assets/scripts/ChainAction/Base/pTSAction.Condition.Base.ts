@@ -1,6 +1,7 @@
 
 import { _decorator, Node } from 'cc';
 import { pTSAsset } from 'db://pts-core/scripts/pTSAsset';
+import { pGlobal } from 'db://pts-core/scripts/utils';
 import { editor_property } from 'db://pts-core/scripts/utils/pClass';
 
 const { ccclass, property } = _decorator;
@@ -38,7 +39,7 @@ export abstract class pTSAction_Condition_Base extends pTSAsset<_I> {
 
     protected _actReadyUp() {
         this._ready = true;
-        this.logger && console.log(`[${this.name} >> ReadyUp]`, this);
+        this.logger && pGlobal.log({ level: "DEV", group: "pTSAction-Condition" }, `[${this.name} >> ReadyUp]`, this)
         this.emit('onReady', this);
     }
 }
