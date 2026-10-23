@@ -9,7 +9,7 @@ import type { EcsAction_World } from "./EcsAction.World";
 const { ccclass, property } = _decorator;
 
 @ccclass('EcsAction_Data_Delay')
-@menu('EcsAction/Data/Delay')
+@menu('EcsAction/Condition/Delay')
 export class EcsAction_Data_Delay extends EcsAction_Data_Condition_Base {
     @property({ min: 0 })
     duration: number = 0;

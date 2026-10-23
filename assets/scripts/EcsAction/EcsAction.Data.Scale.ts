@@ -11,7 +11,7 @@ import type { EcsAction_World } from "./EcsAction.World";
 const { ccclass, property } = _decorator;
 
 @ccclass('EcsAction_Data_Scale')
-@menu('EcsAction/Data/Scale')
+@menu('EcsAction/Mechanic/Scale')
 export class EcsAction_Data_Scale extends EcsAction_Data_Mechanic_Base {
     @property({ type: Vec3 })
     scale: Vec3 = v3(1, 1, 1);

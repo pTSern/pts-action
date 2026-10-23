@@ -11,7 +11,7 @@ import type { EcsAction_World } from "./EcsAction.World";
 const { ccclass, property } = _decorator;
 
 @ccclass('EcsAction_Data_Move')
-@menu('EcsAction/Data/Move')
+@menu('EcsAction/Mechanic/Move')
 export class EcsAction_Data_Move extends EcsAction_Data_Mechanic_Base {
     @property({ type: Vec3 })
     pos: Vec3 = v3();
