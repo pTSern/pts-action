@@ -1,11 +1,12 @@
 import { _decorator, CCInteger } from "cc";
 import { pTSAction_Condition_Base } from "../../Base/pTSAction.Condition.Base";
 import { editor_property } from "db://pts-core/scripts/utils/pClass";
+import { pTSAsset } from "db://pts-core/scripts/pTSAsset";
 
-const { ccclass, property, menu } = _decorator;
+const { ccclass, property } = _decorator;
 
 @ccclass('pTSAction_Condition_Resource_pTSEvent')
-@menu("pTSAction/Condition/Resource/pTSEvent")
+@pTSAsset.menu("pTSAction/Condition/Resource/pTSEvent")
 export class pTSAction_Condition_Resource_pTSEvent extends pTSAction_Condition_Base {
     @property({ type: CCInteger, min: 1 })
     amount: number = 1;
