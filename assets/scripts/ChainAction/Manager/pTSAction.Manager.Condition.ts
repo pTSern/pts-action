@@ -42,11 +42,12 @@ export class pTSAction_Manager_Condition extends pTSAction_Manager_Base<pTSActio
         this._check = this.intMaxRunTime > 0 ? () => this._runtime < this.intMaxRunTime : () => true
 
         const _promises = this._contents.map(async _content => {
-            _content.init(origin);
             _content.on('onReady', this._onContentReady, this);
             _content.tick && this._ticks.push({ func: _content.tick, binder: _content });
-            await _content.ready;
             this._map.set(_content.uuid, false);
+
+            await _content.ready;
+            _content.init(origin);
         });
 
         await Promise.all(_promises);

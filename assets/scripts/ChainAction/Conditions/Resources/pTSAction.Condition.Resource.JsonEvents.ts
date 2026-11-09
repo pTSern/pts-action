@@ -8,7 +8,7 @@ const { ccclass, property } = _decorator
 @ccclass('pTSAction_Condition_Resource_JsonEvents')
 @menu('pTSAction/Condition/Resource/JsonEvents')
 export class pTSAction_Condition_Resource_JsonEvents extends pTSAction_Condition_Base {
-    @property({ type: JsonAsset })
+    @property({ type: [JsonAsset] })
     assets: JsonAsset[] = [];
 
     @property({ type: CCInteger, min: 1 })
@@ -22,6 +22,7 @@ export class pTSAction_Condition_Resource_JsonEvents extends pTSAction_Condition
 
     init(origin: Node): void {
         origin;
+        console.log("[pTSAction_Condition_Resource_JsonEvents] >> Init >>", this.ready, this.assets);
         pEngine.Json.event.add(this.assets, { func: this._onCalled, binder: this });
     }
 

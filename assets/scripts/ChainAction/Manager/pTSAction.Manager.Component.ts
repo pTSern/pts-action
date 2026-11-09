@@ -13,6 +13,9 @@ const { ccclass, property } = _decorator;
 @implement(Event_Awaitable)
 @ccclass('pTSAction_Manager_Component')
 export class pTSAction_Manager_Component extends Component implements Event_Awaitable {
+    @property({ editorOnly: true, visible() { return EDITOR }, group: pConst.GROUPS.CORE })
+    message: string = "[Edit Me]";
+
     @property({ type: pTSAction_Manager_Condition, group: pConst.GROUPS.CORE })
     condition: pTSAction_Manager_Condition = new pTSAction_Manager_Condition();
 

@@ -7,7 +7,8 @@ const { ccclass, property } = _decorator;
 @ccclass('pTSAction_Manager_Base')
 @pTS.$.eventify(true, true)
 export abstract class pTSAction_Manager_Base<_TList extends pTSAsset<any>, _I extends Record<string, any>> implements pTS.$.IDriver<_I> {
-
+    @property({ tooltip: "Determine whether the instance should clone the `contents` list or not" })
+    cloner: boolean = true;
 
     @property({ type: [pTSAsset], visible: true, displayOrder: 9999 })
     contents: _TList[] = []
@@ -19,14 +20,16 @@ export abstract class pTSAction_Manager_Base<_TList extends pTSAsset<any>, _I ex
 
     release() {
         this._released();
-        this._contents.forEach(_content => _content.destroy());
-        this._contents = [];
+        if(this.cloner) {
+            this._contents.forEach(_content => _content.destroy());
+            this._contents = [];
+        }
     }
 
-    init(origin: Node) {
-        this._contents = pTSAsset.clone(this.contents);
-        this.uuid = `${origin.uuid}_${js.IDGenerator.global.getNewId()}`
-        return this._init(origin)
+    async init(origin: Node) {
+        this._contents = this.cloner ? pTSAsset.clone(this.contents) : this.contents;
+        this.uuid = `${origin.uuid}_${js.IDGenerator.global.getNewId()}`;
+        return this._init(origin);
     }
 
     stop() {
